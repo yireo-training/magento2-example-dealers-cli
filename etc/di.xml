@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="example_dealers:list" xsi:type="object">\Yireo\ExampleDealersCli\Console\Command\ListCommand</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Yireo\ExampleDealersCli\Console\Command\ListCommand">
+        <arguments>
+            <argument name="dealerRepository" xsi:type="object">Yireo\ExampleDealers\Api\DealerRepositoryInterface\Proxy</argument>
+        </arguments>
+    </type>
+</config>
