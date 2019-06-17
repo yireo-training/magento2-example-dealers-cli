@@ -3,7 +3,7 @@
   "type": "magento2-module",
   "version": "0.0.1",
   "license": "OSL-3.0",
-  "description": "Magento 2 module adding CLI commands to the Yireo_ExampleDealers module",
+  "description": "Magento 2 module adding a CLI to the dealers module",
   "keywords": [
     "composer-installer",
     "magento"
@@ -15,17 +15,20 @@
     }
   ],
   "require": {
-    "yireo/magento2-example-dealers": "*",
-    "magento/framework": "^102.0",
+    "magento/framework": "^101.0|^102.0",
+    "psr/log": "^1.1",
     "php": ">=7.0.0"
   },
   "require-dev": {
     "phpunit/phpunit": "*",
     "composer/composer": "*@dev"
   },
+  "suggest": {
+    "yireo/magento2-example-dealers-storefront": "*"
+  },
   "autoload": {
     "psr-4": {
-      "Yireo\\ExampleDealersCli\\": ""
+      "Yireo\\ExampleDealers\\": ""
     },
     "files": [
       "registration.php"
