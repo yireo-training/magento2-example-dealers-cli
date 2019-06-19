@@ -28,7 +28,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Yireo\\ExampleDealers\\": ""
+      "Yireo\\ExampleDealersCli\\": ""
     },
     "files": [
       "registration.php"
