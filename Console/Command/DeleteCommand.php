@@ -4,13 +4,17 @@ declare(strict_types=1);
 namespace Yireo\ExampleDealersCli\Console\Command;
 
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Helper\Table;
-
+use Symfony\Component\Console\Question\Question;
 use Yireo\ExampleDealers\Api\DealerRepositoryInterface;
 
-class ListCommand extends Command
+/**
+ * Class DeleteCommand
+ * @package Yireo\ExampleDealersCli\Console\Command
+ */
+class DeleteCommand extends Command
 {
     /**
      * @var DealerRepositoryInterface
@@ -35,8 +39,9 @@ class ListCommand extends Command
      */
     protected function configure()
     {
-        $this->setName('example_dealers:list')
-            ->setDescription('Listing of dealers');
+        $this->setName('example_dealers:delete')
+            ->setDescription('Delete an existing dealer')
+            ->addArgument('id', InputArgument::OPTIONAL, 'ID of the dealer');
     }
 
     /**
@@ -48,25 +53,22 @@ class ListCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $searchCriteriaBuilder = $this->dealerRepository->getSearchCriteriaBuilder();
-        $searchCriteria = $searchCriteriaBuilder->create();
-        $dealers = $this->dealerRepository->getItems($searchCriteria);
+        $helper = $this->getHelper('question');
 
-        $headers = ['ID', 'Dealer Name', 'Dealer Address'];
-        $rows = [];
-
-        foreach ($dealers as $dealer) {
-            $rows[] = [
-                $dealer->getId(),
-                $dealer->getName(),
-                $dealer->getAddress()
-            ];
+        $id = (int)$input->getArgument('id');
+        if (empty($id)) {
+            $question = new Question('ID of the dealer: ', '');
+            $id = (int)$helper->ask($input, $output, $question);
         }
 
-        $table = new Table($output);
-        $table
-            ->setHeaders($headers)
-            ->setRows($rows);
-        $table->render();
+        if (empty($id)) {
+            $output->writeln('<error>No ID given</error>');
+            return;
+        }
+
+        $dealer = $this->dealerRepository->getById($id);
+        $this->dealerRepository->delete($dealer);
+
+        $output->writeln('Deleted existing dealer with ID ' . $id);
     }
 }

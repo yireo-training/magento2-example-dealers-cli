@@ -3,12 +3,33 @@
     <type name="Magento\Framework\Console\CommandList">
         <arguments>
             <argument name="commands" xsi:type="array">
-                <item name="example_dealers:list" xsi:type="object">\Yireo\ExampleDealersCli\Console\Command\ListCommand</item>
+                <item name="example_dealers:list" xsi:type="object">Yireo\ExampleDealersCli\Console\Command\ListCommand</item>
+                <item name="example_dealers:create" xsi:type="object">Yireo\ExampleDealersCli\Console\Command\CreateCommand</item>
+                <item name="example_dealers:update" xsi:type="object">Yireo\ExampleDealersCli\Console\Command\UpdateCommand</item>
+                <item name="example_dealers:delete" xsi:type="object">Yireo\ExampleDealersCli\Console\Command\DeleteCommand</item>
             </argument>
         </arguments>
     </type>
 
     <type name="Yireo\ExampleDealersCli\Console\Command\ListCommand">
+        <arguments>
+            <argument name="dealerRepository" xsi:type="object">Yireo\ExampleDealers\Api\DealerRepositoryInterface\Proxy</argument>
+        </arguments>
+    </type>
+
+    <type name="Yireo\ExampleDealersCli\Console\Command\CreateCommand">
+        <arguments>
+            <argument name="dealerRepository" xsi:type="object">Yireo\ExampleDealers\Api\DealerRepositoryInterface\Proxy</argument>
+        </arguments>
+    </type>
+
+    <type name="Yireo\ExampleDealersCli\Console\Command\UpdateCommand">
+        <arguments>
+            <argument name="dealerRepository" xsi:type="object">Yireo\ExampleDealers\Api\DealerRepositoryInterface\Proxy</argument>
+        </arguments>
+    </type>
+
+    <type name="Yireo\ExampleDealersCli\Console\Command\DeleteCommand">
         <arguments>
             <argument name="dealerRepository" xsi:type="object">Yireo\ExampleDealers\Api\DealerRepositoryInterface\Proxy</argument>
         </arguments>
