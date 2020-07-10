@@ -39,7 +39,8 @@ class UpdateCommand extends Command
             ->setDescription('Update a specific dealer entry')
             ->addArgument('id', InputArgument::OPTIONAL, 'ID of the dealer')
             ->addArgument('name', InputArgument::OPTIONAL, 'Name of the dealer')
-            ->addArgument('address', InputArgument::OPTIONAL, 'Address of the dealer');
+            ->addArgument('address', InputArgument::OPTIONAL, 'Address of the dealer')
+            ->addArgument('description', InputArgument::OPTIONAL, 'Description of the dealer');
     }
 
     /**
@@ -76,9 +77,16 @@ class UpdateCommand extends Command
             $address = $helper->ask($input, $output, $question);
         }
 
+        $description = (string)$input->getArgument('description');
+        if (empty($address)) {
+            $question = new Question('Description of the dealer: ', '');
+            $description = $helper->ask($input, $output, $question);
+        }
+
         $dealer = $this->dealerRepository->getById($id);
         $dealer->setName($name);
         $dealer->setAddress($address);
+        $dealer->setDescription($description);
 
         $this->dealerRepository->save($dealer);
         $output->writeln('Updated existing dealer');

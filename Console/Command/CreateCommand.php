@@ -38,8 +38,9 @@ class CreateCommand extends Command
     {
         $this->setName('example_dealers:create')
             ->setDescription('Create a new dealer')
-            ->addArgument('name', InputArgument::OPTIONAL, 'Name of the dealer')
-            ->addArgument('address', InputArgument::OPTIONAL, 'Address of the dealer');
+            ->addArgument('name', InputArgument::REQUIRED, 'Name of the dealer')
+            ->addArgument('address', InputArgument::OPTIONAL, 'Address of the dealer')
+            ->addArgument('description', InputArgument::OPTIONAL, 'Description of the dealer');
     }
 
     /**
@@ -65,9 +66,16 @@ class CreateCommand extends Command
             $address = $helper->ask($input, $output, $question);
         }
 
+        $description = (string)$input->getArgument('description');
+        if (empty($description)) {
+            $question = new Question('Description of the dealer: ', '');
+            $description = $helper->ask($input, $output, $question);
+        }
+
         $newDealer = $this->dealerRepository->getEmpty();
         $newDealer->setName($name);
         $newDealer->setAddress($address);
+        $newDealer->setDescription($description);
 
         $this->dealerRepository->save($newDealer);
         $output->writeln('Created new dealer');
