@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Yireo\ExampleDealersCli\Console\Command;
@@ -39,6 +40,7 @@ class UpdateCommand extends Command
             ->setDescription('Update a specific dealer entry')
             ->addArgument('id', InputArgument::OPTIONAL, 'ID of the dealer')
             ->addArgument('name', InputArgument::OPTIONAL, 'Name of the dealer')
+            ->addArgument('url_key', InputArgument::OPTIONAL, 'URL key of the dealer')
             ->addArgument('address', InputArgument::OPTIONAL, 'Address of the dealer')
             ->addArgument('description', InputArgument::OPTIONAL, 'Description of the dealer');
     }
@@ -65,26 +67,50 @@ class UpdateCommand extends Command
             return;
         }
 
+        $dealer = $this->dealerRepository->getById($id);
+
         $name = (string)$input->getArgument('name');
         if (empty($name)) {
-            $question = new Question('Name of the dealer: ', '');
+            $question = new Question('Name of the dealer (' . $dealer->getName() . '): ', '');
             $name = $helper->ask($input, $output, $question);
+        }
+
+        if (empty($name)) {
+            $name = $dealer->getName();
+        }
+
+        $urlKey = (string)$input->getArgument('url_key');
+        if (empty($urlKey)) {
+            $question = new Question('URL key of the dealer (' . $dealer->getUrlKey() . '): ', '');
+            $urlKey = $helper->ask($input, $output, $question);
+        }
+
+        if (empty($urlKey)) {
+            $urlKey = $dealer->getUrlKey();
         }
 
         $address = (string)$input->getArgument('address');
         if (empty($address)) {
-            $question = new Question('Address of the dealer: ', '');
+            $question = new Question('Address of the dealer (' . $dealer->getAddress() . '): ', '');
             $address = $helper->ask($input, $output, $question);
         }
 
-        $description = (string)$input->getArgument('description');
         if (empty($address)) {
-            $question = new Question('Description of the dealer: ', '');
+            $address = $dealer->getAddress();
+        }
+
+        $description = (string)$input->getArgument('description');
+        if (empty($description)) {
+            $question = new Question('Description of the dealer (' . $dealer->getDescription() . '): ', '');
             $description = $helper->ask($input, $output, $question);
         }
 
-        $dealer = $this->dealerRepository->getById($id);
+        if (empty($description)) {
+            $description = $dealer->getDescription();
+        }
+
         $dealer->setName($name);
+        $dealer->setUrlKey($urlKey);
         $dealer->setAddress($address);
         $dealer->setDescription($description);
 

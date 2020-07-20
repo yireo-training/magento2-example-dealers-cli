@@ -52,13 +52,14 @@ class ListCommand extends Command
         $searchCriteria = $searchCriteriaBuilder->create();
         $dealers = $this->dealerRepository->getItems($searchCriteria);
 
-        $headers = ['ID', 'Dealer Name', 'Dealer Address'];
+        $headers = ['ID', 'Dealer Name', 'URL Key', 'Dealer Address'];
         $rows = [];
 
         foreach ($dealers as $dealer) {
             $rows[] = [
                 $dealer->getId(),
                 $dealer->getName(),
+                $dealer->getUrlKey(),
                 $dealer->getAddress()
             ];
         }
